@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
+import { GlobalFooter } from "@/components/blocks/GlobalFooter";
+import { GlobalHeader } from "@/components/blocks/GlobalHeader";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -44,7 +47,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </>
         )}
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {/* Header/footer vêm do AEM sem cache: precisam de Suspense com Cache Components. */}
+        <Suspense fallback={<div className="h-16 border-b" />}>
+          <GlobalHeader />
+        </Suspense>
+        {children}
+        <Suspense>
+          <GlobalFooter />
+        </Suspense>
+      </body>
     </html>
   );
 }

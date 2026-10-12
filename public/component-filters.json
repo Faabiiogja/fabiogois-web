@@ -1,3 +1,15 @@
 [
-  { "id": "blocks", "components": ["hero", "text-block"] }
+  {
+    "id": "blocks",
+    "components": [
+      "hero",
+      "text-block"
+    ]
+  },
+  {
+    "id": "links",
+    "components": [
+      "link"
+    ]
+  }
 ]

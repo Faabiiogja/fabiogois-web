@@ -28,6 +28,23 @@ export type TextBlock = FragmentMeta & {
 
 export type Block = HeroBlock | TextBlock;
 
+export type Link = FragmentMeta & {
+  label: string;
+  url: string;
+};
+
+export type Header = FragmentMeta & {
+  siteName: string;
+  logo: ImageRef | null;
+  navItems: Link[] | null;
+};
+
+export type Footer = FragmentMeta & {
+  links: Link[] | null;
+  socialLinks: Link[] | null;
+  copyright: string | null;
+};
+
 export type Page = FragmentMeta & {
   title: string;
   slug: string;

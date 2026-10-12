@@ -10,10 +10,36 @@ Front-end Next.js (App Router, Next 16 com Cache Components) do site do Fabio Go
 | `lib/aem/client.ts` | Chama `/graphql/execute.json/fabiogois/<query>` no AEM (sem cache) |
 | `lib/aem/types.ts` | Tipos da query `page-by-slug` |
 | `lib/aem/ue.ts` | Helpers dos atributos `data-aue-*` |
-| `components/blocks/*` | `Hero`, `TextBlock` e o container `Blocks` (instrumentados para o UE) |
+| `components/ui/*` | Primitivos do shadcn (preset `base-nova`, Base UI) — **não editar à mão**, use `npx shadcn@latest add <componente>` |
+| `components/smoothui/*` | Componentes do [SmoothUI](https://smoothui.dev) (`floating-navbar`, `footer-4`), copiados para o projeto e **levemente adaptados** — ver abaixo |
+| `components/layout/*` | UI pura de layout (`SiteHeader` → floating-navbar, `SiteFooter` → footer-4, `MobileNav`, `NavLink`, `SocialIcon`): recebe props, não conhece o AEM |
+| `components/blocks/*` | Adaptadores AEM → UI com instrumentação do UE: blocos de página (`Hero`, `TextBlock`, container `Blocks`) e globais (`GlobalHeader`, `GlobalFooter`) |
 | `app/aem/[...path]/route.ts` | Proxy de imagens do DAM (o author exige login) |
 | `app/layout.tsx` | Meta tags `urn:adobe:aue:*` e scripts do UE (só quando `NEXT_PUBLIC_AEM_UE_HOST` está definido) |
 | `public/component-*.json` | Definições, modelos e filtros de componentes do UE |
+
+### Convenção de componentes
+
+- `ui/` e `layout/` **não importam nada de `lib/aem`**. Recebem dados por props e repassam atributos extras (`...props`, `attrs`) — é assim que os `data-aue-*` chegam ao HTML.
+- `blocks/` é a **única** camada que conhece o formato do GraphQL: busca/recebe o fragment, converte para as props da UI e adiciona a instrumentação via `lib/aem/ue.ts`.
+- Componentes de bibliotecas (shadcn em `ui/`, SmoothUI em `smoothui/`) são usados **só** dentro de `layout/` ou `blocks/`, nunca direto nas páginas — trocar de biblioteca afeta um único arquivo.
+- Header e footer são renderizados no `app/layout.tsx` (equivalente ao template do AEM) e vêm dos fragments `/content/dam/fabiogois/site/global/{header,footer}`; o menu é montado à mão pelo autor (fragments `link`).
+
+### SmoothUI
+
+Instalado pelo CLI do shadcn a partir do registry do SmoothUI (o `smoothui-cli` só funciona interativo):
+
+```bash
+npx shadcn@latest add https://smoothui.dev/r/<componente>.json
+```
+
+Isso cria `components/smoothui/<componente>/index.tsx`, instala `motion` e adiciona os tokens (`--color-brand`, `--smooth-*`) ao `globals.css`. Os componentes são código nosso a partir daí; as alterações feitas estão marcadas com comentários `fabiogois:` e **precisam ser reaplicadas se o componente for reinstalado**:
+
+- `attrs` / `listAttrs` / `*Attrs` para repassar os `data-aue-*` do Universal Editor;
+- `next/link` nos links internos;
+- `footer-4`: ícones de marca do `lucide-react` (removidos na v1) substituídos por `SocialIcon` (SVG); largura via `page-container`.
+
+A cor de destaque (`hover:text-brand` etc.) vem de `--brand`; defina essa variável no `globals.css` para trocar o rosa padrão do SmoothUI.
 
 Instrumentação: cada fragment é um `data-aue-type="reference"` com `data-aue-resource="urn:aemconnection:<_path>/jcr:content/data/<_variation>"`, e cada campo um `data-aue-prop`. O painel de propriedades do UE é gerado a partir do modelo do fragment, por isso `component-models.json` fica vazio.
 

@@ -1,4 +1,4 @@
-import type { Page } from "./types";
+import type { Footer, Header, Page } from "./types";
 
 const AEM_HOST = process.env.AEM_HOST ?? "http://localhost:4502";
 const AEM_AUTH = process.env.AEM_AUTH;
@@ -43,6 +43,21 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
     { slug },
   );
   return data.pageList.items[0] ?? null;
+}
+
+/**
+ * Header e footer globais (`/content/dam/fabiogois/site/global`). Chamado por
+ * vários componentes no mesmo render: o `fetch` idêntico é memoizado pelo React.
+ */
+export async function getGlobal(): Promise<{ header: Header | null; footer: Footer | null }> {
+  const data = await persistedQuery<{
+    headerByPath: { item: Header | null } | null;
+    footerByPath: { item: Footer | null } | null;
+  }>("global");
+  return {
+    header: data.headerByPath?.item ?? null,
+    footer: data.footerByPath?.item ?? null,
+  };
 }
 
 /** URL pública (via proxy do Next) para um asset do DAM. */

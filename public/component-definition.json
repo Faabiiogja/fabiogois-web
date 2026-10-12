@@ -33,6 +33,26 @@
           }
         }
       ]
+    },
+    {
+      "title": "Navigation",
+      "id": "navigation",
+      "components": [
+        {
+          "title": "Link",
+          "id": "link",
+          "plugins": {
+            "aem": {
+              "cf": {
+                "name": "link",
+                "cfModel": "/conf/fabiogois/settings/dam/cfm/models/link",
+                "cfFolder": "/content/dam/fabiogois/site/global/links",
+                "title": "Link"
+              }
+            }
+          }
+        }
+      ]
     }
   ]
 }

@@ -11,7 +11,7 @@ async function PageContent({ params }: Pick<PageProps<"/[[...slug]]">, "params">
   if (!page) notFound();
 
   return (
-    <main {...aueFragment(page, "Page")} className="mx-auto w-full max-w-3xl px-6">
+    <main {...aueFragment(page, "Page")} className="page-container">
       <Blocks blocks={page.blocks ?? []} />
     </main>
   );
@@ -19,7 +19,7 @@ async function PageContent({ params }: Pick<PageProps<"/[[...slug]]">, "params">
 
 export default function Page({ params }: PageProps<"/[[...slug]]">) {
   return (
-    <Suspense fallback={<main className="mx-auto w-full max-w-3xl px-6 py-16">Carregando…</main>}>
+    <Suspense fallback={<main className="page-container py-16">Carregando…</main>}>
       <PageContent params={params} />
     </Suspense>
   );
