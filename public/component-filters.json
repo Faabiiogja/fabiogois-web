@@ -1,0 +1,3 @@
+[
+  { "id": "blocks", "components": ["hero", "text-block"] }
+]

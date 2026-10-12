@@ -1,0 +1,38 @@
+{
+  "groups": [
+    {
+      "title": "Blocks",
+      "id": "blocks",
+      "components": [
+        {
+          "title": "Hero",
+          "id": "hero",
+          "plugins": {
+            "aem": {
+              "cf": {
+                "name": "hero",
+                "cfModel": "/conf/fabiogois/settings/dam/cfm/models/hero",
+                "cfFolder": "/content/dam/fabiogois/site",
+                "title": "Hero"
+              }
+            }
+          }
+        },
+        {
+          "title": "Text Block",
+          "id": "text-block",
+          "plugins": {
+            "aem": {
+              "cf": {
+                "name": "text-block",
+                "cfModel": "/conf/fabiogois/settings/dam/cfm/models/text-block",
+                "cfFolder": "/content/dam/fabiogois/site",
+                "title": "Text Block"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

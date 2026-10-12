@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "dev:ue": "next dev --experimental-https --experimental-https-key /home/fabio/Job/aem-sdk/universal-editor/key.pem --experimental-https-cert /home/fabio/Job/aem-sdk/universal-editor/certificate.pem"
   },
   "dependencies": {
     "next": "16.4.0",
